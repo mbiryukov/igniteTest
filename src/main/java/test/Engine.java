@@ -66,7 +66,7 @@ public class Engine {
 
     public void setRemoteListenerAnyKey(CacheUpdateListener cacheUpdateListener) {
         IgnitePredicate<CacheEvent> remoteListener = createListenerAnyKey(cacheUpdateListener);
-        ignite.events(ignite.cluster().forCacheNodes("testCache")).remoteListenAsync(null, remoteListener, EVT_CACHE_OBJECT_PUT, EVT_CACHE_OBJECT_REMOVED);
+        ignite.events(ignite.cluster().forCacheNodes("testCache")).remoteListen(null, remoteListener, EVT_CACHE_OBJECT_PUT, EVT_CACHE_OBJECT_REMOVED);
     }
 
     public void setLocalListenerCurrentKey(CacheUpdateListener cacheUpdateListener, Integer key) {
@@ -76,7 +76,7 @@ public class Engine {
 
     public void setRemoteListenerCurrentKey(CacheUpdateListener cacheUpdateListener, Integer key) {
         IgnitePredicate<CacheEvent> remoteListener = createListenerCurrentKey(key, cacheUpdateListener);
-        ignite.events(ignite.cluster().forCacheNodes("testCache")).remoteListenAsync(null, remoteListener, EVT_CACHE_OBJECT_PUT, EVT_CACHE_OBJECT_REMOVED);
+        ignite.events(ignite.cluster().forCacheNodes("testCache")).remoteListen(null, remoteListener, EVT_CACHE_OBJECT_PUT, EVT_CACHE_OBJECT_REMOVED);
     }
 
     private IgnitePredicate<CacheEvent> createListenerAnyKey(final CacheUpdateListener cacheUpdateListener) {
