@@ -34,7 +34,7 @@
         </property>
         <property name="communicationSpi">
             <bean class="org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi">
-                <property name="localAddress" value="192.168.43.253"/>
+                <property name="localAddress" value="192.168.43.177"/>
             </bean>
         </property>
         <property name="includeEventTypes">
