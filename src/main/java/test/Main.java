@@ -53,6 +53,7 @@ public class Main {
             }
             if ("localAny".equals(operation)) {
                 engine.setLocalListenerAnyKey(new CacheUpdateListenerImpl());
+                System.out.println("Added localAny");
             }
             if ("localCurr".equals(operation)) {
                 System.out.println("Enter key");
@@ -62,6 +63,7 @@ public class Main {
             }
             if ("remoteAny".equals(operation)) {
                 engine.setRemoteListenerAnyKey(new CacheUpdateListenerImpl());
+                System.out.println("added remoteAny");
             }
             if ("remoteCurr".equals(operation)) {
                 System.out.println("Enter key");
