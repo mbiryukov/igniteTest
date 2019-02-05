@@ -1,19 +1,18 @@
 package test;
 
-import org.apache.ignite.Ignite;
-import org.apache.ignite.IgniteCache;
-import org.apache.ignite.IgniteState;
-import org.apache.ignite.Ignition;
+import org.apache.ignite.*;
 import org.apache.ignite.events.CacheEvent;
 import org.apache.ignite.lang.IgnitePredicate;
+import org.apache.ignite.transactions.Transaction;
 import org.apache.ignite.transactions.TransactionException;
+import org.apache.ignite.transactions.TransactionIsolation;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.locks.Lock;
 
 import static org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_PUT;
 import static org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_REMOVED;
+import static org.apache.ignite.transactions.TransactionConcurrency.OPTIMISTIC;
 
 @Component
 public class Engine {
@@ -50,21 +49,7 @@ public class Engine {
     public void addOrReplaceCollectionValue(Integer cacheKey, Integer key, String value) throws PutCacheException {
         IgniteCache<Integer, Data> cache = ignite.getOrCreateCache(CACHE_NAME);
 
-        Lock lock = cache.lock(cacheKey);
-        try {
-            lock.lock();
-            Data data = cache.get(cacheKey);
-            data.addOrReplaceValue(key, value);
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            cache.put(cacheKey, data);
-        } finally {
-            lock.unlock();
-        }
-/*        Thread thread = new Thread(() -> {
+        Thread thread = new Thread(() -> {
             try (Transaction tx = ignite.transactions().txStart(OPTIMISTIC, TransactionIsolation.REPEATABLE_READ)) {
                 Data data = get(cacheKey);
                 data.addOrReplaceValue(key, value);
@@ -82,7 +67,7 @@ public class Engine {
             }
             System.out.println("finished thread");
         });
-        thread.start();*/
+        thread.start();
     }
 
     public void setLocalListenerAnyKey(CacheUpdateListener cacheUpdateListener) {
